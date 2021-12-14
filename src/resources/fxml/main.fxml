@@ -11,20 +11,26 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="ru.kpfu.itis.controller.Controller"
-            prefHeight="720.0" prefWidth="1280.0">
+            prefHeight="1280.0" prefWidth="720">
 
-    <ScrollPane fx:id="messagesArea" minWidth="700" minHeight="500"
-                maxWidth="400" maxHeight="700" layoutY="120.0">
-        <VBox fx:id="messages">
+    <HBox layoutY="20" spacing="10" layoutX="10">
+        <TextField fx:id="username" minWidth="600" promptText="username"/>
+        <Button fx:id="loginButton" minWidth="90">Войти</Button>
+    </HBox>
+    <HBox layoutY="60" spacing="10" layoutX="10">
+        <Button fx:id="room1" disable="true">11-003</Button>
+        <Button fx:id="room2" disable="true">Флуд</Button>
+        <Button fx:id="room3" disable="true">Друзья</Button>
+    </HBox>
+    <ScrollPane minWidth="700" minHeight="640"
+                maxWidth="400" maxHeight="800" layoutY="100" layoutX="10">
+        <VBox fx:id="messages" spacing="5">
             <children/>
         </VBox>
     </ScrollPane>
-    <HBox>
-        <TextField fx:id="name" minWidth="360" promptText="ФИО"/>
-        <TextField fx:id="group" minWidth="80" promptText="Группа"/>
-        <TextField fx:id="graduationYear" minWidth="80" promptText="год выпуска"/>
-        <TextField fx:id="university" minWidth="180" promptText="Университет"/>
-        <Button fx:id="addUser" minWidth="80">Добавить</Button>
+    <HBox layoutY="750" layoutX="10" spacing="10">
+        <TextField fx:id="messageText" minWidth="600" promptText="Введите сообщение" disable="true"/>
+        <Button fx:id="sendMessage" minWidth="90" disable="true">Отправить</Button>
     </HBox>
 
 </AnchorPane>

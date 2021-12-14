@@ -1,47 +1,85 @@
 package ru.kpfu.itis.controller;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import ru.kpfu.itis.protocol.Message;
+import ru.kpfu.itis.protocol.MessageType;
+import ru.kpfu.itis.sockets.ClientSocket;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    public TextField name;
-    public TextField group;
-    public TextField graduationYear;
-    public TextField university;
-
-    public ScrollPane messagesArea;
-    public VBox messages;
+    private ClientSocket clientSocket;
 
     @FXML
-    private Button addUser;
+    private TextField username;
+    @FXML
+    private Button loginButton;
 
+    @FXML
+    private Button room1;
+    @FXML
+    private Button room2;
+    @FXML
+    private Button room3;
 
-    private void updateMessagesOutput() {
-        messages.getChildren().clear();
+    @FXML
+    private VBox messages;
 
-//        for (User user : users) {
-//            Label messageLabel = new Label();
-//            messageLabel.setText(user.toString());
-//            messages.getChildren().add(messageLabel);
-//        }
-    }
+    @FXML
+    public TextField messageText;
+
+    @FXML
+    public Button sendMessage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //addUser.setOnAction(actionEvent -> add_user_clicked());
-        updateMessagesOutput();
+        loginButton.setOnMouseClicked(event -> {
+            String nickname = username.getText();
+            loginButton.setDisable(true);
+            username.setEditable(false);
+            clientSocket = new ClientSocket();
+            clientSocket.connect(this, nickname);
+            room1.setDisable(false);
+            room2.setDisable(false);
+            room3.setDisable(false);
+        });
+
+        sendMessage.setOnAction(actionEvent -> {
+            Message message = new Message();
+            message.setType(MessageType.CHAT);
+            message.setBody(messageText.getText());
+            clientSocket.sendMessage(message);
+            messageText.clear();
+        });
+
+        room1.setOnAction(actionEvent -> enterRoom(0));
+        room2.setOnAction(actionEvent -> enterRoom(1));
+        room3.setOnAction(actionEvent -> enterRoom(2));
     }
 
+    public void enterRoom(Integer roomId) {
+        Message message = new Message();
+        message.setType(MessageType.ENTER_ROOM);
+        message.setBody(roomId.toString());
+        clientSocket.enterRoom(message);
+    }
+
+    public VBox getMessages() {
+        return messages;
+    }
+
+    public TextField getMessageText() {
+        return messageText;
+    }
+
+    public Button getSendMessage() {
+        return sendMessage;
+    }
 }

@@ -8,9 +8,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
-import java.net.URL;
 
-public class Main extends Application {
+public class ClientApp extends Application {
+
+    private static final String FXML_FILE_NAME = "/fxml/main.fxml";
+    private static final String ICON_FILE_NAME = "/images/logo.jpeg";
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -19,19 +21,16 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Чат");
-        //FXMLLoader loader = new FXMLLoader().load(getClass().getResourceAsStream("\\fxml\\new.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource(FXML_FILE_NAME));
 
-
-        //Parent root = loader.load();
         stage.setScene(new Scene(root));
 
-        stage.setWidth(1280);
-        stage.setHeight(720);
+        stage.setWidth(720);
+        stage.setHeight(1280);
         stage.setFullScreen(false);
         stage.setResizable(false);
 
-        InputStream iconStream = getClass().getResourceAsStream("/images/logo.jpeg");
+        InputStream iconStream = getClass().getResourceAsStream(ICON_FILE_NAME);
         if (iconStream != null) {
             Image image = new Image(iconStream);
             stage.getIcons().add(image);

@@ -1,5 +1,7 @@
 package ru.kpfu.itis.model;
 
+import ru.kpfu.itis.protocol.Message;
+
 import java.util.ArrayList;
 import java.util.List;
 
