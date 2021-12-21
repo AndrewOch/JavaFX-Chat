@@ -111,7 +111,24 @@ public class Client extends Thread {
                                     client.sendMessage(message);
                                 }
                             }
-
+                            break;
+                        }
+                        case FILE: {
+                            Message alarm = new Message();
+                            alarm.setType(MessageType.CHAT);
+                            alarm.setBody(nickname + " отправил файл " + message.getHeaders().get("fileName"));
+                            if (!this.getRoomId().equals(-1)) {
+                                chatServer.getRooms().get(this.getRoomId()).addMessage(alarm);
+                            }
+                            for (Client client : clients) {
+                                if (this.getRoomId() != -1 && client.getRoomId().equals(this.getRoomId())) {
+                                    System.out.println(client.nickname);
+                                    client.sendMessage(alarm);
+                                    if (!this.equals(client)) {
+                                        client.sendMessage(message);
+                                    }
+                                }
+                            }
                             break;
                         }
                     }

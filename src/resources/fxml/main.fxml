@@ -29,7 +29,8 @@
         </VBox>
     </ScrollPane>
     <HBox layoutY="750" layoutX="10" spacing="10">
-        <TextField fx:id="messageText" minWidth="600" promptText="Введите сообщение" disable="true"/>
+        <TextField fx:id="messageText" minWidth="480" promptText="Введите сообщение" disable="true"/>
+        <Button fx:id="sendFile" minWidth="90" disable="true">Отправить файл</Button>
         <Button fx:id="sendMessage" minWidth="90" disable="true">Отправить</Button>
     </HBox>
 

@@ -4,7 +4,9 @@ public enum MessageType {
     CONNECT("connect", "Подключение к серверу"),
     ENTER_ROOM("enter room", "Вход в комнату"),
     EXIT_ROOM("exit room", "Выход из комнаты"),
-    CHAT("chat", "Сообщение другим пользователям");
+    CHAT("chat", "Сообщение другим пользователям"),
+    FILE("file", "Отправка файла");
+
 
     private final String title;
     private final String description;

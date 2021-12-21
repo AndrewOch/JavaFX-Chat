@@ -5,20 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
-import ru.kpfu.itis.client.Client;
 import ru.kpfu.itis.controller.Controller;
-import ru.kpfu.itis.model.Room;
 import ru.kpfu.itis.protocol.Message;
 import ru.kpfu.itis.protocol.MessageType;
 import ru.kpfu.itis.server.ChatServer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Path;
 
 public class ClientSocket extends Thread {
+
+    public String folderName = "src/java/ru/kpfu/itis/file_container";
 
     private Socket clientSocket;
 
@@ -107,7 +105,23 @@ public class ClientSocket extends Thread {
                 }
                 case ENTER_ROOM: {
                     Platform.runLater(() -> controller.getMessageText().setDisable(false));
+                    Platform.runLater(() -> controller.getSendFile().setDisable(false));
                     Platform.runLater(() -> controller.getSendMessage().setDisable(false));
+                    break;
+                }
+                case FILE: {
+                    try {
+
+                        File file = new File(Path.of(folderName) + "/" + message.getHeaders().get("fileName"));
+                        file.createNewFile();
+
+                        PrintWriter out = new PrintWriter(file.getAbsolutePath());
+                        out.println(message.getBody());
+                        out.close();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
             }

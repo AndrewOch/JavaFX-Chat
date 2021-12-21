@@ -9,11 +9,16 @@ import ru.kpfu.itis.protocol.Message;
 import ru.kpfu.itis.protocol.MessageType;
 import ru.kpfu.itis.sockets.ClientSocket;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    public Button sendFile;
     private ClientSocket clientSocket;
 
     @FXML
@@ -59,6 +64,25 @@ public class Controller implements Initializable {
             messageText.clear();
         });
 
+        sendFile.setOnAction(actionEvent -> {
+            String path = messageText.getText();
+
+            File file = new File(path);
+            if (file.exists()) {
+
+                Message message = new Message();
+                message.setType(MessageType.FILE);
+                try {
+                    message.setBody(Files.readString(file.toPath(), StandardCharsets.US_ASCII));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                message.addHeader("fileName", file.getName());
+                clientSocket.sendMessage(message);
+                messageText.clear();
+            }
+        });
+
         room1.setOnAction(actionEvent -> enterRoom(0));
         room2.setOnAction(actionEvent -> enterRoom(1));
         room3.setOnAction(actionEvent -> enterRoom(2));
@@ -81,5 +105,9 @@ public class Controller implements Initializable {
 
     public Button getSendMessage() {
         return sendMessage;
+    }
+
+    public Button getSendFile() {
+        return sendFile;
     }
 }
